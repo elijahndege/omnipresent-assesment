@@ -4,7 +4,7 @@
 
 ```bash
 # 1. Clone the repository
-git clone api
+git clone https://github.com/elijahndege/omnipresent-assesment.git api
 
 # 2. Enter your newly-cloned folder.
 cd api
