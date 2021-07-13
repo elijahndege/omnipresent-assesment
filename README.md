@@ -15,7 +15,6 @@ npm i
 # 4. fill in development.env.example file and rename it to  development.env
 # The app uses Redis to cache the countries result.
 
-
 # 6. Run development server 
 npm run start:dev 
 # The app runs on development mode on port 30000 (http://localhost:3000)
