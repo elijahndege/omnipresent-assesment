@@ -7,42 +7,46 @@ import { Company } from './entities/company.entity';
 
 @Injectable()
 export class CompaniesService {
-
   constructor(
     private readonly employeesService: EmployeesService,
-    private readonly countriesService: CountriesService
-  ) {
-
-  }
+    private readonly countriesService: CountriesService,
+  ) {}
 
   findAll(): Company[] {
     return MOCK_COMPANIES;
   }
 
+  findOne(companyId: number): Company {
+    return this.findAll().find((company) => company.id === companyId);
+  }
+
   async companyEmployees(companyId: number): Promise<Employee[]> {
-
-    if (![1, 2].includes(companyId)) {
-      throw new NotFoundException('Invalid company id')
+    if (![1, 2].includes(Number(companyId))) {
+      throw new NotFoundException('Invalid company id');
     }
-    const companies = this.findAll();
-
-    // Filter employee by company
-    const companyEmployees: Employee[] = this.employeesService.findAll().filter(employee => {
-      return employee.companyId === Number(companyId)
-    });
-
-    const resolvedEmployees = [];
-    for (const employee of companyEmployees) {
-      const obj = companies.find(company => company.id === employee.companyId);
-      const countryObj = await this.countriesService.fetchCountryFromCache(employee.countryCode);
+    const resolvedEmployees: Employee[] = [];
+    const employees = this.currentCompanyEmployees(companyId);
+    for (const employee of employees) {
+      const countryObj = await this.countriesService.fetchCountryFromCache(
+        employee.countryCode,
+      );
       if (countryObj?.region === 'Asia' || countryObj?.region === 'Europe') {
-        employee.identifier = `${employee.firstName.toLowerCase()}${employee.lastName.toLowerCase()}${employee.dateOfBirth.split('/').join('')}`;
+        employee.identifier = `${employee.firstName.toLowerCase()}${employee.lastName.toLowerCase()}${employee.dateOfBirth
+          .split('/')
+          .join('')}`;
       }
       const { countryCode, companyId, ...newObj } = employee;
-      newObj.company = obj;
+      newObj.company = this.findOne(employee.companyId);
       newObj.country = countryObj;
-      resolvedEmployees.push(newObj)
-    };
+      resolvedEmployees.push(newObj);
+    }
+
     return resolvedEmployees;
+  }
+
+  currentCompanyEmployees(companyId: number): Employee[] {
+    return this.employeesService.findAll().filter((employee) => {
+      return employee.companyId === Number(companyId);
+    });
   }
 }

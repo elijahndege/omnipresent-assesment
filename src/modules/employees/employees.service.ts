@@ -4,7 +4,6 @@ import { Employee } from './entities/employee.entity';
 
 @Injectable()
 export class EmployeesService {
-
   findAll(): Employee[] {
     return MOCK_EMPLOYEES;
   }

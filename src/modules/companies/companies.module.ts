@@ -8,4 +8,4 @@ import { EmployeesModule } from '../employees/employees.module';
   controllers: [CompaniesController],
   providers: [CompaniesService],
 })
-export class CompaniesModule { }
+export class CompaniesModule {}

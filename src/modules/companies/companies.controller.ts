@@ -3,8 +3,7 @@ import { CompaniesService } from './companies.service';
 
 @Controller('companies')
 export class CompaniesController {
-  constructor(
-    private readonly companiesService: CompaniesService) { }
+  constructor(private readonly companiesService: CompaniesService) {}
 
   @Get(':id/employees')
   companyEmployees(@Param('id') companyId: number) {
