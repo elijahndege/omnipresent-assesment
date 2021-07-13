@@ -17,7 +17,7 @@ npm i
 
 # 6. Run development server 
 npm run start:dev 
-# The app runs on development mode on port 30000 (http://localhost:3000)
+# The app runs on development mode on port 3000 (http://localhost:3000)
 🥳🥳🥳
 
 # 7. Run tests
