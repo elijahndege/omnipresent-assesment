@@ -13,10 +13,12 @@ cd api
 npm i
 
 # 4. fill in development.env.example file and rename it to  development.env
+# The app uses Redis to cache the countries result.
+
 
 # 6. Run development server 
 npm run start:dev 
-# access swagger api doc by opening http://localhost:3000
+# The app runs on development mode on port 30000 (http://localhost:3000)
 🥳🥳🥳
 
 # 7. Run tests
@@ -28,4 +30,6 @@ npm run start:dev
 ```bash
 # There are two company Id's {1,2} for this use case
 GET http://localhost:3000/companies/{id}/employees
+# The first call will take much longer than the second call
+# Because the app caches the result to redis for faster reads
 ```
