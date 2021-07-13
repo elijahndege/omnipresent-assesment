@@ -1,5 +1,5 @@
 import MOCK_COMPANIES from '@data/companies';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CountriesService } from '@src/shared/services/countries.service';
 import { EmployeesService } from '../employees/employees.service';
 import { Employee } from '../employees/entities/employee.entity';
@@ -19,7 +19,11 @@ export class CompaniesService {
     return MOCK_COMPANIES;
   }
 
-  async companyEmployees(companyId: number):Promise<Employee[]> {
+  async companyEmployees(companyId: number): Promise<Employee[]> {
+
+    if (![1, 2].includes(companyId)) {
+      throw new NotFoundException('Invalid company id')
+    }
     const companies = this.findAll();
 
     // Filter employee by company
