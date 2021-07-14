@@ -24,27 +24,35 @@ export class CompaniesService {
     if (![1, 2].includes(Number(companyId))) {
       throw new NotFoundException('Invalid company id');
     }
-    const resolvedEmployees: Employee[] = [];
-    const employees = this.currentCompanyEmployees(companyId);
-    for (const employee of employees) {
+    const employees: Employee[] = [];
+    const companyEmployees = this.currentCompanyEmployees(companyId);
+    for (const companyEmployee of companyEmployees) {
+      const employObj = new Employee({
+        firstName: companyEmployee.firstName,
+        lastName: companyEmployee.lastName,
+        dateOfBirth: companyEmployee.dateOfBirth,
+        jobTitle: companyEmployee.jobTitle,
+        company: this.findOne(companyEmployee.companyId),
+        country: companyEmployee.countryCode,
+        identifier: '',
+      });
       const countryObj = await this.countriesService.fetchCountryFromCache(
-        employee.countryCode,
+        companyEmployee.countryCode,
       );
+      employObj.country = countryObj;
       if (countryObj?.region === 'Asia' || countryObj?.region === 'Europe') {
-        employee.identifier = `${employee.firstName.toLowerCase()}${employee.lastName.toLowerCase()}${employee.dateOfBirth
+        employObj.identifier = `${companyEmployee.firstName.toLowerCase()}${companyEmployee.lastName.toLowerCase()}${companyEmployee.dateOfBirth
           .split('/')
           .join('')}`;
       }
-      const { countryCode, companyId, ...newObj } = employee;
-      newObj.company = this.findOne(employee.companyId);
-      newObj.country = countryObj;
-      resolvedEmployees.push(newObj);
+
+      employees.push(employObj);
     }
 
-    return resolvedEmployees;
+    return employees;
   }
 
-  currentCompanyEmployees(companyId: number): Employee[] {
+  currentCompanyEmployees(companyId: number) {
     return this.employeesService.findAll().filter((employee) => {
       return employee.companyId === Number(companyId);
     });

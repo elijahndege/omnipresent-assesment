@@ -11,9 +11,7 @@ export class Employee {
   lastName: string;
   dateOfBirth: string;
   jobTitle: string;
-  countryCode?: string;
-  companyId?: number;
-  country?: Country;
-  company?: Company;
-  identifier?: string;
+  country: Country | string;
+  company: Company;
+  identifier: string;
 }

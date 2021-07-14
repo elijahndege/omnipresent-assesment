@@ -50,13 +50,13 @@ describe('Company Employees', () => {
             'UTC+12:00',
           ],
         },
+        identifier: '',
       },
       {
         firstName: 'Lisa',
         lastName: 'Testora',
         dateOfBirth: '11/07/1984',
         jobTitle: 'CTO',
-        identifier: 'lisatestora11071984',
         company: {
           id: 1,
           name: 'Test co',
@@ -92,6 +92,7 @@ describe('Company Employees', () => {
             'UTC+06:00',
           ],
         },
+        identifier: 'lisatestora11071984',
       },
     ],
   };
@@ -110,7 +111,7 @@ describe('Company Employees', () => {
 
   it('[GET] /companies/1/employees', () => {
     return request(app.getHttpServer())
-      .get('/companies/2/employees')
+      .get('/companies/1/employees')
       .expect(200)
       .expect(companiesService.companyEmployees);
   });
